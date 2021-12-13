@@ -63,4 +63,54 @@ class LinkedList:
             - MUST execute in O(n), where n is the size of the list
             
         """
-        raise Exception('TODO IMPLEMENT ME !')
+        ret = LinkedList()
+        
+        if end < 0:
+            raise ValueError("end is negative")
+        
+        if start < 0:
+            raise ValueError("start is negative")
+        
+        if start >= end:
+            return ret
+        
+        current = self._head
+        
+        if current == None:
+            return ret
+        
+        index = 0
+        cur_ret = None
+        
+        while current != None:
+            if index == start:
+                while index < end:
+                    if ret._head == None:
+                        ret.add(current._data)
+                        cur_ret = ret._head
+                    else:
+                        if current == None:
+                            return ret
+                        new_node = Node(current._data)
+                        cur_ret.set_next(new_node)
+                        cur_ret = cur_ret.get_next()
+                    current = current.get_next()
+                    index +=1
+                return ret
+            else:
+                current = current.get_next()
+                index += 1
+        
+        return ret
+        
+def to_ll(python_list):
+    """ Creates a LinkedList from a regular Python list - very handy for testing
+    """
+    ret = LinkedList()
+    
+    for el in reversed(python_list):
+        ret.add(el)
+    return ret
+
+la = to_ll(['a','b','c'])
+lb = la.slice(1,4) # b c
