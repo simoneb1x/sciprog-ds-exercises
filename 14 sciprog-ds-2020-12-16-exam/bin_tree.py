@@ -124,7 +124,7 @@ class BinaryTree:
                 stack.append(temp._right)                
         
         raise LookupError("A or b not found!")
-
+        
     def family_sum_rec(self):
         """ MODIFIES the tree by adding to each node data its *original* parent and children data
 
@@ -132,7 +132,44 @@ class BinaryTree:
             - a recursive implementation is acceptable
             - HINT: you will probably want to define a helper function
         """
-        raise Exception('TODO IMPLEMENT ME !')
+        if self._data == 0:
+            return self
+            
+        
+        def helper(node, parent):
+            current = node
+            pdata = parent
+            
+            if pdata == None:
+                pdata = current._data
+                if current._left != None and current._right != None:
+                    current._data += current._left._data + current._right._data
+                elif current._left != None:
+                    current._data += current._left._data
+                elif current._right != None:
+                    current._data += + current._right._data
+            else:
+                tmp = current._data
+                if current._left != None and current._right != None:
+                    current._data += pdata + current._left._data + current._right._data
+                    pdata = tmp
+                elif current._left != None:
+                    current._data += pdata + current._left._data
+                    pdata = tmp
+                elif current._right != None:
+                    current._data += pdata + current._right._data
+                    pdata = tmp
+                else:
+                    current._data += pdata
+                    pdata = tmp
+                
+            if current._left != None:
+                helper(current._left, pdata)
+                    
+            if current._right != None:
+                helper(current._right, pdata)
+                
+        helper(self, None)
     
 # TEST #
 def bt(*args):
@@ -170,14 +207,6 @@ def bt(*args):
         ret._right = children[1]
     return ret
 
-td = bt('d')
-tb = bt('b')
-tc = bt('c', 
-            None,
-            td)
-
-ta = bt('a', 
-            tb, 
-            tc)
-
-ta.swap_stack('b', 'd')
+t = bt(1, 
+        bt(2))
+t.family_sum_rec()
