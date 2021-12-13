@@ -60,4 +60,38 @@ class LinkedList:
            - if linked list has odd size, simply ignore the exceeding node.
            - MUST execute in O(n), where n is the size of the list
         """
-        raise Exception('TODO IMPLEMENT ME !')
+        
+        current = self._head
+        
+        if current == None:
+            return []
+        
+        succ = self._head._next
+        
+        while current.get_next() != None:
+            if succ._data < current._data:
+                tmp = current._data
+                current._data = succ._data
+                succ._data = tmp
+                
+                current = succ.get_next()
+                if current == None:
+                    return
+                succ = current.get_next()
+            else:
+                current = succ.get_next()
+                if current == None:
+                    return
+                succ = current.get_next()
+                
+def to_ll(python_list):
+    """ Creates a LinkedList from a regular Python list - very handy for testing.
+    """
+    ret = LinkedList()
+    
+    for el in reversed(python_list):
+        ret.add(el)
+    return ret
+ll = to_ll([5,1,2,7,6,3])
+ll.couple_sort()
+# [1,5,2,7,3,6]
