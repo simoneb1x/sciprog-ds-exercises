@@ -1,0 +1,84 @@
+B1.1 Complexity
+
+    L is a list of n elements.
+
+    def my_fun2(L):
+        n = len(L)                                  # 1
+        tmp = []                                    # 1
+        for i in range(n):                          # O(n)
+            for j in range(n):                      # O(n) ---> O(n^2)
+                tmp.append(L[i]/(L[j]))             # 1 - access elements by index and append
+        return tmp                                  # return
+
+    def my_fun(L):
+        n = len(L)                                  # 1 - stores length in n
+        if n <= 1:                                  # 1 - if
+            return 1
+        else:                                       
+            L1 = L[0:n//3]                          # O(n) - slice L
+            L2 = L[2*(n//3):]                       # O(n) - slice L
+            a = my_fun(L1) + max(my_fun2(L1))       # recursion + my_fun2 that is O(n^2) + max that is O(n)
+            b = my_fun(L2) + max(my_fun2(L2))       # recursion + my_fun2 that is O(n^2) + max that is O(n)
+            return a - b                            # substract lists O(n)
+
+    Asymptotic computational complexity should be O(n^2).
+
+
+
+B1.2 Postfix
+
+    Data structure that I would use: Stack
+    Why: A Stack seems to me the more flexible way to deal with postfix notation.
+    Let's consider the first scenario:
+
+        Postfix notation: a b op1 (7 4 *)
+
+    We have to scan the elements from left to right. We expect a pattern in which we
+    accept some numbers as input, but then we expect also an operator that can make us
+    able to evaluate the expression.
+
+    Therefore, the implementation should consider an evaluation of the single input element:
+
+        if element is a number:
+            convert it into an integer and push it onto the stack.
+
+        else (= element is an operator):
+            pop the first two integer that are onto the stack, do the operation 
+            and push the result onto the stack.
+    
+    Function should return:
+        elem = 7
+        stack = [7]
+
+        elem = 4
+        stack = [4, 7]
+
+        elem = *
+        stack = [28]
+
+    Let's consider the second scenario:
+
+        Postfix notation:    a b c op1 op2 d op3        (e.g. 7 4 5 * + 9 +)
+
+    Function should return:
+
+        elem = 7
+        stack = [7]
+
+        elem = 4
+        stack = [4, 7]
+
+        elem = 5
+        stack = [5, 4, 7]
+
+        elem = *
+        stack = [20, 7]
+        
+        elem = +
+        stack = [27]
+
+        elem = 9
+        stack = [9, 27]
+
+        elem = +
+        stack = [36]
